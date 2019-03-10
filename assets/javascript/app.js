@@ -2,10 +2,32 @@ var questions = [
     {
         question: "What does an agoraphobiac fear?",
         answerChoices: [
-            { answer: "Open spaces", value: true },
-            { answer: "Heights", value: false },
-            { answer: "Being alone", value: false },
-            { answer: "Spiders", value: false }
+            { answer: "Open spaces or crowds", value: true, isUsed: false },
+            { answer: "Heights", value: false, isUsed: false },
+            { answer: "Being alone", value: false, isUsed: false },
+            { answer: "Spiders", value: false, isUsed: false }
+        ],
+        url: "https://darcsunshine.files.wordpress.com/2014/03/1379695033_agoraphobia.jpg",
+        isAnswered: false,
+    },
+    {
+        question: "What does an achluophobia fear?",
+        answerChoices: [
+            { answer: "Darkness", value: true, isUsed: false },
+            { answer: "Flowers", value: false, isUsed: false },
+            { answer: "Pain", value: false, isUsed: false },
+            { answer: "Needles or pointed objects", value: false, isUsed: false }
+        ],
+        url: "https://darcsunshine.files.wordpress.com/2014/03/1379695033_agoraphobia.jpg",
+        isAnswered: false,
+    },
+    {
+        question: "What does an coulrophobia fear?",
+        answerChoices: [
+            { answer: "Clowns", value: true, isUsed: false },
+            { answer: "Computers", value: false, isUsed: false },
+            { answer: "Colors", value: false, isUsed: false },
+            { answer: "Dogs", value: false, isUsed: false }
         ],
         url: "https://darcsunshine.files.wordpress.com/2014/03/1379695033_agoraphobia.jpg",
         isAnswered: false,
@@ -22,6 +44,15 @@ var countWrong = 0;
 var countUnanswered = 0;
 var pickedAnswer = false;
 
+function resetGame() {
+    for (var x = 0; x < questions.length; x++) {
+        for (var y = 0; y < questions[x].answerChoices.length; y++) {
+            questions[x].answerChoices[y].isUsed = false;
+        }
+        questions[x].isAnswered = false;
+    }
+}
+
 function startTimer() {
     if (!clockRunning) {
         clockId = setInterval(countTimer, 1000);
@@ -37,7 +68,9 @@ function stopTimer() {
 function countTimer() {
     if (timeLimit == 0) {
         stopTimer();
-        answerNone();
+        if ((countRight + countWrong + countUnanswered) < questions.length) {
+            answerNone();
+        }
     } else {
         timeLimit--;
     }
@@ -57,8 +90,10 @@ function answerRight() {
     colorAnswers();
     updateStatus();
     stopTimer();
-    setTimeout(printQuestions, 2000);
-    
+    if ((countRight + countWrong + countUnanswered) < questions.length) {
+        setTimeout(printQuestions, 2000);
+    }
+
 }
 
 function answerWrong() {
@@ -66,8 +101,10 @@ function answerWrong() {
     colorAnswers();
     updateStatus();
     stopTimer();
-    setTimeout(printQuestions, 2000);
-    
+    if ((countRight + countWrong + countUnanswered) < questions.length) {
+        setTimeout(printQuestions, 2000);
+    }
+
 }
 
 function colorAnswers() {
@@ -91,11 +128,11 @@ $(document).ready(function () {
     });
 
     $(document).on("click", ".answer", function (event) {
-        
+
         if (!pickedAnswer) {
             $(this).addClass("answer-picked");
             pickedAnswer = true;
-    
+
             if ($(this).attr("value") == "true") {
                 answerRight();
             } else {
@@ -113,63 +150,71 @@ function startPage() {
     $(".restart-area").hide();
 }
 
-function printQuestions() {
+function resetQuestionDisplay() {
     $("th").empty();
     $("tbody").empty();
     pickedAnswer = false;
     timeLimit = 10;
     startTimer();
+}
 
-    if (!questions[0].isAnswered) {
-        // var questionDiv = $("<tr>").text(questions[0].question);
-        // questionDiv.attr("class", "col-md-7 mx-auto");
-        $("th").text(questions[0].question);
+function printQuestions() {
+    var randomAns;
+    var randomQue;
+    var answersCount = 0;
+    var questionsCount = countRight + countWrong + countUnanswered;
 
-        // Randomize answer order
-        // Math.floor(Math.random * questions[0].answerChoices.length)
-        for (var i = 0; i < questions[0].answerChoices.length; i++) {
-            var answerTR = $("<tr>");
-            var answerTD = $("<td>").text(questions[0].answerChoices[i].answer);
-            
-            if (questions[0].answerChoices[i].value == true) {
-                answerTD.attr("value", "true");
-                answerTD.attr("class", "answer answer-right");
-            } else {
-                answerTD.attr("class", "answer answer-wrong");
+    resetQuestionDisplay();
+    // resetGame();
+    while (questionsCount < questions.length) {
+
+        randomQue = Math.floor(Math.random() * questions.length);
+
+        if (!questions[randomQue].isAnswered) {
+            break;
+        }
+        console.log("Stuck");
+    }
+
+    console.log("randomQue: " + randomQue);
+
+
+    if (questionsCount < questions.length) {
+        if (!questions[randomQue].isAnswered) {
+
+            $("th").text(questions[randomQue].question);
+            questions[randomQue].isAnswered = true;
+
+            while (answersCount < questions[randomQue].answerChoices.length) {
+
+                randomAns = Math.floor(Math.random() * questions[randomQue].answerChoices.length);
+                if (!questions[randomQue].answerChoices[randomAns].isUsed) {
+                    answersCount++;
+                    var answerTR = $("<tr>");
+                    var answerTD = $("<td>").text(questions[randomQue].answerChoices[randomAns].answer);
+
+                    if (questions[randomQue].answerChoices[randomAns].value) {
+                        answerTD.attr("value", "true");
+                        answerTD.attr("class", "answer answer-right");
+                    } else {
+                        answerTD.attr("class", "answer answer-wrong");
+                    }
+
+                    answerTR.append(answerTD);
+                    $("tbody").append(answerTR);
+                    questions[randomQue].answerChoices[randomAns].isUsed = true;
+                }
             }
-            answerTR.append(answerTD);
-            //answerDiv.attr("class", "col-md-7 mx-auto");
-            $("tbody").append(answerTR);
         }
     }
 }
+
 
 function startGame() {
     $(".start-area").hide();
     $(".status-area").show();
     $(".question-area").show();
-    // $(".answer-area").show();
 
     printQuestions();
-    
 
-
-
-    //$('.timer').html('<p>Time remaining: <span class="time">30</span></p>');
-
-    // $('.question').html(questions[counter].question);
-    // var showingAnswers =
-    //   '<p class="answer first-answer">' +
-    //   questions[counter].answers[0].answer +
-    //   '</p><p class="answer">' +
-    //   questions[counter].answers[1].answer +
-    //   '</p><p class="answer">' +
-    //   questions[counter].answers[2].answer +
-    //   '</p><p class="answer">' +
-    //   questions[counter].answers[3].answer +
-    //   '</p>';
-
-    // $('.answers').html(showingAnswers);
-
-    // timerHolder();
 }
