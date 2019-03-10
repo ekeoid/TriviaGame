@@ -115,6 +115,7 @@ function colorAnswers() {
 }
 
 function updateStatus() {
+    $(".questions").text(questions.length - (countRight + countWrong + countUnanswered));
     $(".correct").text(countRight);
     $(".incorrect").text(countWrong);
 }
@@ -146,7 +147,6 @@ function startPage() {
     $(".start-area").show();
     $(".status-area").hide();
     $(".question-area").hide();
-    // $(".answer-area").hide();
     $(".restart-area").hide();
 }
 
@@ -158,6 +158,11 @@ function resetQuestionDisplay() {
     startTimer();
 }
 
+function preNumtoChar(number) {
+    var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    return letters[number-1];
+}
+
 function printQuestions() {
     var randomAns;
     var randomQue;
@@ -167,17 +172,12 @@ function printQuestions() {
     resetQuestionDisplay();
     // resetGame();
     while (questionsCount < questions.length) {
-
         randomQue = Math.floor(Math.random() * questions.length);
 
         if (!questions[randomQue].isAnswered) {
             break;
         }
-        console.log("Stuck");
     }
-
-    console.log("randomQue: " + randomQue);
-
 
     if (questionsCount < questions.length) {
         if (!questions[randomQue].isAnswered) {
@@ -191,7 +191,7 @@ function printQuestions() {
                 if (!questions[randomQue].answerChoices[randomAns].isUsed) {
                     answersCount++;
                     var answerTR = $("<tr>");
-                    var answerTD = $("<td>").text(questions[randomQue].answerChoices[randomAns].answer);
+                    var answerTD = $("<td>").text(preNumtoChar(answersCount) + ": " + questions[randomQue].answerChoices[randomAns].answer);
 
                     if (questions[randomQue].answerChoices[randomAns].value) {
                         answerTD.attr("value", "true");
@@ -216,5 +216,6 @@ function startGame() {
     $(".question-area").show();
 
     printQuestions();
+    updateStatus();
 
 }
