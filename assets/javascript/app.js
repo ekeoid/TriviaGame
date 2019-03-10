@@ -38,7 +38,7 @@ var questions = [
 var clockId;
 var clockRunning = false;
 var timer = 0;
-var timeLimit = 10;
+var timeLimit = 5;
 var countRight = 0;
 var countWrong = 0;
 var countUnanswered = 0;
@@ -77,12 +77,37 @@ function countTimer() {
     $(".timer").text(timeLimit);
 }
 
+function printStatus(flag) {
+
+    if (flag == "none") {
+        var correctAns = $(".answer-right").text();
+        $("table").empty();
+        $("table").append("<p> Out of Time </p> The correct answer is " + correctAns);
+    }
+
+    if (flag == "right") {
+        $("table").empty();
+        $("table").append("<p> You are so SMART! </p>");
+    }
+
+    if (flag == "wrong") {
+        var correctAns = $(".answer-right").text();
+        $("table").empty();
+        $("table").append("<p> You are Wrong... </p> The correct answer is " + correctAns);
+    }
+
+    if (flag == "done") {
+
+    }
+}
+
 function answerNone() {
     countUnanswered++;
     updateStatus();
     stopTimer();
-    setTimeout(printQuestions, 2000);
 
+    setTimeout(function () { printStatus("none"); }, 1000);
+    setTimeout(printQuestions, 4000);
 }
 
 function answerRight() {
@@ -90,8 +115,11 @@ function answerRight() {
     colorAnswers();
     updateStatus();
     stopTimer();
+
+    setTimeout(function () { printStatus("right"); }, 1000);
+
     if ((countRight + countWrong + countUnanswered) < questions.length) {
-        setTimeout(printQuestions, 2000);
+        setTimeout(printQuestions, 4000);
     }
 
 }
@@ -101,8 +129,11 @@ function answerWrong() {
     colorAnswers();
     updateStatus();
     stopTimer();
+
+    setTimeout(function () { printStatus("wrong"); }, 1000);
+
     if ((countRight + countWrong + countUnanswered) < questions.length) {
-        setTimeout(printQuestions, 2000);
+        setTimeout(printQuestions, 4000);
     }
 
 }
@@ -151,10 +182,9 @@ function startPage() {
 }
 
 function resetQuestionDisplay() {
-    $("th").empty();
-    $("tbody").empty();
+    $("table").empty();
     pickedAnswer = false;
-    timeLimit = 10;
+    timeLimit = 5;
     startTimer();
 }
 
@@ -170,7 +200,7 @@ function printQuestions() {
     var questionsCount = countRight + countWrong + countUnanswered;
 
     resetQuestionDisplay();
-    // resetGame();
+
     while (questionsCount < questions.length) {
         randomQue = Math.floor(Math.random() * questions.length);
 
@@ -182,6 +212,9 @@ function printQuestions() {
     if (questionsCount < questions.length) {
         if (!questions[randomQue].isAnswered) {
 
+            $("table").append("<thead>").append("<tbody>");
+            $("thead").append("<tr>");
+            $("tr").append("<th>");
             $("th").text(questions[randomQue].question);
             questions[randomQue].isAnswered = true;
 
@@ -190,6 +223,7 @@ function printQuestions() {
                 randomAns = Math.floor(Math.random() * questions[randomQue].answerChoices.length);
                 if (!questions[randomQue].answerChoices[randomAns].isUsed) {
                     answersCount++;
+                                        
                     var answerTR = $("<tr>");
                     var answerTD = $("<td>").text(preNumtoChar(answersCount) + ": " + questions[randomQue].answerChoices[randomAns].answer);
 
@@ -209,6 +243,10 @@ function printQuestions() {
     }
 }
 
+function checkGameStatus() {
+    var questionsCount = countRight + countWrong + countUnanswered;
+
+}
 
 function startGame() {
     $(".start-area").hide();
@@ -217,5 +255,6 @@ function startGame() {
 
     printQuestions();
     updateStatus();
+    checkGameStatus();
 
 }
