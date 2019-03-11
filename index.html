@@ -9,15 +9,18 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Limelight" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/style.css">
+    
 
     <style>
-        .b-col {
+        .bb-col {
             border: 1px dotted red;
             /* height: 30px; */
         }
 
-        .b-row {
+        .bb-row {
             border: 1px dotted green;
             /* height: 30px; */
         }
@@ -37,26 +40,26 @@
 
         <div class="b-row row text-center start-area">
             <div class="col-md-12 b-col">
-                <div>Start Page</div>
-                <button type="button" class="btn btn-primary start-button">Start</button>
+                <div class="start-img"></div>
+                <button type="button" class="btn btn-dark btn-lg start-button">Start</button>
             </div>
         </div>
 
         <div class="b-row row status-area">
             <div class="b-col mr-auto"></div>
-            <div class="b-col col-sm-4 col-md-2">Time Remaining:</div>
+            <div class="b-col col-sm-4 col-md-2 timertext">Time Remaining:</div>
             <div class="b-col col-md-1 col-sm-2 timer"></div>
-            <div class="b-col mr-auto"></div>
+            <div class="b-col mr-auto timerblank"></div>
             <div class="b-col col-md-4">
                 <div class="row">
-                    <div class="b-col col-md-6 col-sm-6">Questions Left</div>
-                    <div class="b-col col-md-6 col-sm-6 questions"></div>
+                    <div class="col-md-6 col-sm-6 statustext">Questions Left</div>
+                    <div class="col-md-6 col-sm-6 questions"></div>
                 </div>
-                <div class="row">
-                    <div class="b-col col-md-6 col-sm-6">Correct: </div>
-                    <div class="b-col col-md-6 col-sm-6 correct"></div>
-                    <div class="b-col col-md-6 col-sm-6">Wrong: </div>
-                    <div class="b-col col-md-6 col-sm-6 incorrect"></div>
+                <div class="row results">
+                    <div class="col-md-6 col-sm-6 statustext">Correct: </div>
+                    <div class="col-md-6 col-sm-6 correct"></div>
+                    <div class="col-md-6 col-sm-6 statustext">Wrong: </div>
+                    <div class="col-md-6 col-sm-6 incorrect"></div>
                 </div>
             </div>
             <div class="b-col col-md-2"></div>
@@ -65,15 +68,17 @@
         <div class="b-row row question-area">
             <div class="b-col col-md-2 col-sm-0"></div>
             <div class="b-col col-md-8 col-sm-12">
-                <table class="table table-hover"></table>
+                <table class="table table-hover table-borderless"></table>
             </div>
             <div class="b-col col-md-2 col-sm-0"></div>
         </div>
 
 
-
+        
         <div class="b-row row restart-area">
-            <div class="col-md-7 mx-auto">Reset</div>
+            <div class="col-md-7 mx-auto">
+                <button type="button" class="btn btn-secondary restart-button">Restart</button>
+            </div>
         </div>
 
 
@@ -89,7 +94,9 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+        <script src="assets/javascript/biebz.js"></script>
         <script src="assets/javascript/app.js"></script>
+
 </body>
 
 </html>

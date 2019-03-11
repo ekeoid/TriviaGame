@@ -1,44 +1,15 @@
-var questions = [
-    {
-        question: "What does an agoraphobiac fear?",
-        answerChoices: [
-            { answer: "Open spaces or crowds", value: true, isUsed: false },
-            { answer: "Heights", value: false, isUsed: false },
-            { answer: "Being alone", value: false, isUsed: false },
-            { answer: "Spiders", value: false, isUsed: false }
-        ],
-        url: "https://darcsunshine.files.wordpress.com/2014/03/1379695033_agoraphobia.jpg",
-        isAnswered: false,
-    },
-    {
-        question: "What does an achluophobia fear?",
-        answerChoices: [
-            { answer: "Darkness", value: true, isUsed: false },
-            { answer: "Flowers", value: false, isUsed: false },
-            { answer: "Pain", value: false, isUsed: false },
-            { answer: "Needles or pointed objects", value: false, isUsed: false }
-        ],
-        url: "https://darcsunshine.files.wordpress.com/2014/03/1379695033_agoraphobia.jpg",
-        isAnswered: false,
-    },
-    {
-        question: "What does an coulrophobia fear?",
-        answerChoices: [
-            { answer: "Clowns", value: true, isUsed: false },
-            { answer: "Computers", value: false, isUsed: false },
-            { answer: "Colors", value: false, isUsed: false },
-            { answer: "Dogs", value: false, isUsed: false }
-        ],
-        url: "https://darcsunshine.files.wordpress.com/2014/03/1379695033_agoraphobia.jpg",
-        isAnswered: false,
-    }
-];
+// var questions[] is linked externally
 
+var TESTING_MODE = false;
+
+var TIME_REMAINING = TESTING_MODE ? 1 : 15;
+var DELAY_ANSWER = TESTING_MODE ? 0 : 1500;
+var DELAY_QUESTION = TESTING_MODE ? 0 : 7000;
 
 var clockId;
 var clockRunning = false;
 var timer = 0;
-var timeLimit = 5;
+var timeLimit;
 var countRight = 0;
 var countWrong = 0;
 var countUnanswered = 0;
@@ -51,6 +22,14 @@ function resetGame() {
         }
         questions[x].isAnswered = false;
     }
+
+    countRight = 0;
+    countWrong = 0;
+    countUnanswered = 0;
+    pickedAnswer = false;
+
+    $(".restart-area").hide();
+    $(".question-area").show();
 }
 
 function startTimer() {
@@ -77,27 +56,56 @@ function countTimer() {
     $(".timer").text(timeLimit);
 }
 
+function printBSCard() {
+    $("table").append( "<div class=\"card border-dark\">\
+                            <div class=\"card-body bg-secondary\">\
+                                <h5 class=\"card-title\">Card title</h5>\
+                                <h6 class=\"card-subtitle mb-2 text-muted\">Card subtitle</h6>\
+                                <p class=\"card-text\">Body</p>\
+                            </div>\
+                        </div>");
+}
+
 function printStatus(flag) {
+    var correctAns = $(".answer-right").text();
+    var correctIndex = $(".answer-right").attr("index");
 
     if (flag == "none") {
-        var correctAns = $(".answer-right").text();
         $("table").empty();
-        $("table").append("<p> Out of Time </p> The correct answer is " + correctAns);
+        printBSCard();
+        $(".card-title").text("Out of Time!!!");
+        $(".card-subtitle").text("The correct answer is " + correctAns);
+        $(".card-text").text(questions[correctIndex].info);
     }
 
     if (flag == "right") {
         $("table").empty();
-        $("table").append("<p> You are so SMART! </p>");
+        printBSCard();
+        $(".card-title").text("You are so SMART!");
+        $(".card-subtitle").text("");
+        $(".card-text").text(questions[correctIndex].info);
     }
 
     if (flag == "wrong") {
-        var correctAns = $(".answer-right").text();
         $("table").empty();
-        $("table").append("<p> You are Wrong... </p> The correct answer is " + correctAns);
+        printBSCard();
+        $(".card-title").text("You are Wrong...");
+        $(".card-subtitle").text("The correct answer is " + correctAns);
+        $(".card-text").text(questions[correctIndex].info);
     }
 
     if (flag == "done") {
-
+        $("table").empty();
+        printBSCard();
+        $(".card-title").text("All done, here\'s how you did!");
+        $(".card-subtitle").text("");
+        $(".card-text").html("<ul></ul>");
+        $("ul").append("<li>Correct Answers: " + countRight + "</li>");
+        $("ul").append("<li>Incorrect Answers: " + countWrong + "</li>");
+        $("ul").append("<li>Unanswered: " + countUnanswered + "</li>");
+        
+        $(".status-area").hide();
+        $(".restart-area").show();
     }
 }
 
@@ -106,8 +114,12 @@ function answerNone() {
     updateStatus();
     stopTimer();
 
-    setTimeout(function () { printStatus("none"); }, 1000);
-    setTimeout(printQuestions, 4000);
+    setTimeout(function () { printStatus("none"); }, DELAY_ANSWER);
+    setTimeout(printQuestions, DELAY_QUESTION);
+    
+    if ((countRight + countWrong + countUnanswered) >= questions.length) {
+        setTimeout(function () { printStatus("done"); }, DELAY_ANSWER);
+    }
 }
 
 function answerRight() {
@@ -116,12 +128,13 @@ function answerRight() {
     updateStatus();
     stopTimer();
 
-    setTimeout(function () { printStatus("right"); }, 1000);
+    setTimeout(function () { printStatus("right"); }, DELAY_ANSWER);
 
     if ((countRight + countWrong + countUnanswered) < questions.length) {
-        setTimeout(printQuestions, 4000);
+        setTimeout(printQuestions, DELAY_QUESTION);
+    } else {
+        setTimeout(function () { printStatus("done"); }, DELAY_ANSWER);
     }
-
 }
 
 function answerWrong() {
@@ -130,19 +143,22 @@ function answerWrong() {
     updateStatus();
     stopTimer();
 
-    setTimeout(function () { printStatus("wrong"); }, 1000);
+    setTimeout(function () { printStatus("wrong"); }, DELAY_ANSWER);
 
     if ((countRight + countWrong + countUnanswered) < questions.length) {
-        setTimeout(printQuestions, 4000);
+        setTimeout(printQuestions, DELAY_QUESTION);
+    } else {
+        setTimeout(function () { printStatus("done"); }, DELAY_ANSWER);
     }
-
 }
 
 function colorAnswers() {
 
     $(".answer-picked").css("font-weight", "bolder");
-    $(".answer-wrong").addClass("table-danger");
-    $(".answer-right").addClass("table-success");
+    $(".answer-wrong").addClass("bg-danger");
+    $(".answer-wrong").css("color", "#111");
+    $(".answer-right").addClass("bg-success");
+    $(".answer-right").css("color", "#333");
 }
 
 function updateStatus() {
@@ -150,29 +166,6 @@ function updateStatus() {
     $(".correct").text(countRight);
     $(".incorrect").text(countWrong);
 }
-
-$(document).ready(function () {
-    startPage();
-
-    $(document).on("click", ".start-button", function (event) {
-        event.preventDefault();
-        startGame();
-    });
-
-    $(document).on("click", ".answer", function (event) {
-
-        if (!pickedAnswer) {
-            $(this).addClass("answer-picked");
-            pickedAnswer = true;
-
-            if ($(this).attr("value") == "true") {
-                answerRight();
-            } else {
-                answerWrong();
-            }
-        }
-    });
-});
 
 function startPage() {
     $(".start-area").show();
@@ -184,13 +177,13 @@ function startPage() {
 function resetQuestionDisplay() {
     $("table").empty();
     pickedAnswer = false;
-    timeLimit = 5;
+    timeLimit = TIME_REMAINING;
     startTimer();
 }
 
 function preNumtoChar(number) {
     var letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    return letters[number-1];
+    return letters[number - 1];
 }
 
 function printQuestions() {
@@ -223,12 +216,13 @@ function printQuestions() {
                 randomAns = Math.floor(Math.random() * questions[randomQue].answerChoices.length);
                 if (!questions[randomQue].answerChoices[randomAns].isUsed) {
                     answersCount++;
-                                        
+
                     var answerTR = $("<tr>");
                     var answerTD = $("<td>").text(preNumtoChar(answersCount) + ": " + questions[randomQue].answerChoices[randomAns].answer);
 
                     if (questions[randomQue].answerChoices[randomAns].value) {
                         answerTD.attr("value", "true");
+                        answerTD.attr("index", randomQue);
                         answerTD.attr("class", "answer answer-right");
                     } else {
                         answerTD.attr("class", "answer answer-wrong");
@@ -243,11 +237,6 @@ function printQuestions() {
     }
 }
 
-function checkGameStatus() {
-    var questionsCount = countRight + countWrong + countUnanswered;
-
-}
-
 function startGame() {
     $(".start-area").hide();
     $(".status-area").show();
@@ -255,6 +244,34 @@ function startGame() {
 
     printQuestions();
     updateStatus();
-    checkGameStatus();
-
 }
+
+$(document).ready(function () {
+    startPage();
+
+    $(document).on("click", ".start-button", function (event) {
+        event.preventDefault();
+        startGame();
+    });
+
+    $(document).on("click", ".answer", function (event) {
+
+        if (!pickedAnswer) {
+            $(this).addClass("answer-picked");
+            pickedAnswer = true;
+
+            if ($(this).attr("value") == "true") {
+                answerRight();
+            } else {
+                answerWrong();
+            }
+        }
+    });
+    
+    $(document).on("click", ".restart-button", function (event) {
+        resetGame();
+        printQuestions();
+        updateStatus();
+    });
+
+});
