@@ -118,7 +118,9 @@ The questions are linked in an external file as an array of objects in variable 
 >
 
 ##### `function printQuestions()`
-> This function looks at the `questions[]` array to
+> This function looks at the `questions[]` array to print 1 available question the the Bootsrap card area. The number of question is based on the length of the `questions[]` array.
+> It uses 2 `while` loops. 1 to obtain the new (not already used) questions from the `questions[x].isAnswered` randomly. 2 to print the details of the information in a random order based on `questions[x].answerChoices[y].isUsed`.
+> The index of the `question[]` for that specific question is stored in an attribute to gather the `info` of that associated question later.
 >
 
 ##### `function startGame()`
