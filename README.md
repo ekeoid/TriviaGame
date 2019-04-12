@@ -94,34 +94,34 @@ The questions are linked in an external file as an array of objects in variable 
 >
 
 ##### `function answerWrong()`
-> This function is based on the `$(document).on("click", ".answer", function (event) {...}`
+> This function is based on the `$(document).on("click", ".answer", function (event) {...}`. When an answer is selected, `pickedAnswer` boolean is toggled to prevent additional answers from being selected. When the incorrect answer is chosen based on the `value` attribute which would be `undefined`, this function is called which updates that status board and colors the answers (right-green and wrong-red), and calls `printStatus()` with the `wrong` parameter.
 >
 
 ##### `function colorAnswers()`
->
+> This function looks at `questions[x].answerChoices[y].value` from the `printQuestions()` function to added classes `.answer-picked`, `.answer-right`, `.answer-wrong` to the question choices. Since these classes are available, jQuery can CSS style these rows to provide user visual indication.
 >
 
 ##### `function updateStatus()`
->
+> This function updates the HTML display status area for the remaining questions, number of questions answered right, and number of questions answered wrong.
 >
 
 ##### `function startPage()`
->
+> This function hides all display elements / containers except for the `.start-area` which includes a wallpaper and actor to start.
 >
 
 ##### `function resetQuestionDisplay()`
->
+> This function empties the the question display area to start a new round of questions. Not really needed here, since it is performed as part of printQustions().
 >
 
 ##### `function preNumtoChar(number)`
->
+> This is a simple function, to return the alphabetical letter associated with the numerical number.
 >
 
 ##### `function printQuestions()`
->
+> This function looks at the `questions[]` array to
 >
 
 ##### `function startGame()`
->
+> This function hides the `.start-area` and displays all the other elements of the game.
 >
 
