@@ -86,38 +86,42 @@ The questions are linked in an external file as an array of objects in variable 
 >
 
 ##### `function answerNone()`
+> If the question is unanswered, this function is called by `countTimer()` which is on the `startTimer()` interval. When there is no choice, `printStatus()` is passed `none` where it let the user know the right answer (with display delays) and then get ready for the next question (if any) with `printQuestions()`.
+>
+
 ##### `function answerRight()`
+> This function is based on the `$(document).on("click", ".answer", function (event) {...}`. When an answer is selected, `pickedAnswer` boolean is toggled to prevent additional answers from being selected. When the correct answer is chosen based on the `value` attribute which is populated based on the `questions[x].answerChoices[y].value`, this function is called which updates that status board and colors the answers (right-green and wrong-red), and calls `printStatus()` with the `right` parameter.
+>
+
 ##### `function answerWrong()`
+> This function is based on the `$(document).on("click", ".answer", function (event) {...}`
+>
+
 ##### `function colorAnswers()`
+>
+>
+
 ##### `function updateStatus()`
+>
+>
+
 ##### `function startPage()`
+>
+>
+
 ##### `function resetQuestionDisplay()`
+>
+>
+
 ##### `function preNumtoChar(number)`
+>
+>
+
 ##### `function printQuestions()`
+>
+>
+
 ##### `function startGame()`
-
-
-```
-var TESTING_MODE = false;
-
-var TIME_REMAINING = TESTING_MODE ? 1 : 15;
-var DELAY_ANSWER = TESTING_MODE ? 0 : 1500;
-var DELAY_QUESTION = TESTING_MODE ? 0 : 7000;
-
-var clockId;
-var clockRunning = false;
-var timer = 0;
-var timeLimit;
-var countRight = 0;
-var countWrong = 0;
-var countUnanswered = 0;
-var pickedAnswer = false;
-
-
-$(document).ready(function ()
-    startPage();
-    $(document).on("click", ".start-button", function (event)
-    $(document).on("click", ".answer", function (event)
-    $(document).on("click", ".restart-button", function (event)
-```
+>
+>
 
