@@ -62,11 +62,29 @@ The questions are linked in an external file as an array of objects in variable 
 #### JavaScript - `game.js`
 
 ##### `function resetGame()`
+> All variables are set to the initial state. The `HTML` restart area is hidden and questions area is displayed. For the `questions[]` object array, all `questions[x].answerChoices[y].isUsed` and `questions[x].isAnswered` are returned to `false`.
+>
+
 ##### `function startTimer()`
+> Starts an interval timer for the questions. The ID of the timer is tracked and an associated Boolean variable is used to determine if the timer is active or not.
+>
+
 ##### `function stopTimer()`
+> Stops the interval timer, when the question is answered or timed out.
+>
+
 ##### `function countTimer()`
+> This function that is called by the start timer. It decreases the time value tracking the seconds and also is a status check on the conditionals of the timer, such as reaching zero of if no answer is selected.
+>
+
 ##### `function printBSCard()`
+> This function appends a Bootstrap card model to the questions table. This is the framework to hold the questions and answers for the game.
+>
+
 ##### `function printStatus(flag)`
+> This function updates the score status board and messages on the question area, depending on whether the answer is right, wrong, unanswered, or there are no more questions left.
+>
+
 ##### `function answerNone()`
 ##### `function answerRight()`
 ##### `function answerWrong()`
