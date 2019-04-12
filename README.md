@@ -10,7 +10,7 @@ You can find the instructions for this assignment here: [homework-instructions.m
 
 The rest of this README will overview the interpretation of the game through the JS functions .
 
-[homework-instructions.md]: https://github.com/ekeoid/TriviaGame/blob/master/homework-instructions.md
+[homework-instructions.md]: https://github.com/ekeoid/UNC-Bootcamp-2019-Class/blob/master/01-Class-Content/05-timers/02-Homework/Instructions/homework-instructions.md
 
 ### File Structure
 
