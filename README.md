@@ -59,11 +59,27 @@ The questions are linked in an external file as an array of objects in variable 
 - `answerChoices[x].isUsed` is a boolean to track whether the answer choice was used already of the other choices for randomization.
 
 
-
 #### JavaScript - `game.js`
 
-##### `playGame()`
+##### `function resetGame()`
+##### `function startTimer()`
+##### `function stopTimer()`
+##### `function countTimer()`
+##### `function printBSCard()`
+##### `function printStatus(flag)`
+##### `function answerNone()`
+##### `function answerRight()`
+##### `function answerWrong()`
+##### `function colorAnswers()`
+##### `function updateStatus()`
+##### `function startPage()`
+##### `function resetQuestionDisplay()`
+##### `function preNumtoChar(number)`
+##### `function printQuestions()`
+##### `function startGame()`
 
+
+```
 var TESTING_MODE = false;
 
 var TIME_REMAINING = TESTING_MODE ? 1 : 15;
@@ -79,25 +95,11 @@ var countWrong = 0;
 var countUnanswered = 0;
 var pickedAnswer = false;
 
-function resetGame()
-function startTimer()
-function stopTimer()
-function countTimer()
-function printBSCard()
-function printStatus(flag)
-function answerNone()
-function answerRight()
-function answerWrong()
-function colorAnswers()
-function updateStatus()
-function startPage()
-function resetQuestionDisplay()
-function preNumtoChar(number)
-function printQuestions()
-function startGame()
 
 $(document).ready(function ()
     startPage();
     $(document).on("click", ".start-button", function (event)
     $(document).on("click", ".answer", function (event)
     $(document).on("click", ".restart-button", function (event)
+```
+
