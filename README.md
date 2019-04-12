@@ -27,10 +27,15 @@ The rest of this README will overview the interpretation of the game through the
 └── index.html
 ```
 
-#### JavaScript - `biebz.js`
-The questions are linked in an external file as an array of objects in variable `questions[]`.
+### Approach
 
-The object structure is
+- Game will read list of questions.
+- Game will output question from list in random order.
+- Game will output answers for each question in random order.
+
+
+#### JavaScript - `biebz.js`
+The questions are linked in an external file as an array of objects in variable `questions[]`. The object structure is:
 ```
   {
     question: "",
@@ -44,6 +49,15 @@ The object structure is
     isAnswered: false,
   }
 ```
+
+- `question` is the question that different answer choices.
+- `answerChoices` is an array of possible answers, with parameter for the correct answer, and tracking of the output display of answer.
+- `info` is extra information about that supports the explanation of the correct answer.
+- `isAnswered` is a variable to track whether the question was used already of all total questions for randomization.
+- `answerChoices[x].answer` is the choice answer for user to select.
+- `answerChoices[x].value` is a boolean to identify the correct answer between all the other answer choices.
+- `answerChoices[x].isUsed` is a boolean to track whether the answer choice was used already of the other choices for randomization.
+
 
 
 #### JavaScript - `game.js`
